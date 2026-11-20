@@ -26,7 +26,7 @@ The phone keeps doing the hands' work: EventKit calendar writes, notifications a
 6. **Fixture honesty:** no terrain factor, since the fixture has no trail field. Wear comes from real `distanceKm` since `boughtOn`, plus `startMiles` converted once. The phone's race date overrides the fixture's Dec 6.
 7. **Scope:** `/workouts/shoe-aware`, the simulation, the Claude fallback, Amplitude from the harness and the embedding model are deferred until `/shoes/recommend` works end to end on the phone. With 10 shoes, reranking the whole shortlist replaces embedding retrieval.
 
-**Status (built on branch `surya/recommendation-harness`):** `/health`, `/warm`, `/evidence` (cached until Senso is wired) and `/shoes/recommend` (live on SIE, with the fallback). 11 tests pass. See `harness/README.md`.
+**Status (2026-11-20, branch `surya/recommendation-harness`, PR #13):** live at https://trackerplusplus-harness.vercel.app. `/shoes/recommend` picks from real shoes found in expert reviews (Nimble → Qwen extraction → SingleStore/snapshot), with photos, Senso citations and a SingleStore audit record. `/workouts/recommend` plans the next 7 days from health data, shoe condition and Tony's memory facts, with optional web suggestions. Also `/evidence`, `/warm`, `/shoes/prefetch`, `/audit/*`. 34 tests. See `harness/README.md`; the sections below are the original plan.
 
 ## Principles
 
