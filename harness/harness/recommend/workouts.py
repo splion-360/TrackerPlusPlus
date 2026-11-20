@@ -304,7 +304,7 @@ def _why(idea: dict, req: WorkoutsRequest) -> str:
             "race week": f"Race week: your race is {(req.raceDate - req.now.date()).days} days out" if req.raceDate else "Race week",
             "new shoes": f"Your new pair arrives {req.newPairArrives:%a}" if req.newPairArrives else "New shoes",
             "worn shoes": "Your shoes are worn out", "any": "An easy add-on"}[idea["phase"]]
-    return f"{lead}; {idea['sourceHost']} suggests it {idea['when'].rstrip('.')}. Optional, and it fits your weekly load."
+    return f"{lead}; {idea['sourceHost']} suggests it {idea['when'][:1].lower() + idea['when'][1:].rstrip('.')}. Optional, and it fits your weekly load."
 
 
 def citations(session: dict) -> list[dict]:
