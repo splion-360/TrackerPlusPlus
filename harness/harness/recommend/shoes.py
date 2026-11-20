@@ -193,9 +193,11 @@ def recommend(req: ShoesRequest) -> ShoesResponse:
     rule = next((m for m in req.mandate if m.category == "any"), None) or Mandate(
         id="ask-first", text="Ask me before buying anything.", category="any", maxAutoCents=0)
     others = sorted((s for s in eligible if s is not chosen), key=lambda s: s["id"] not in lost_map or "Ranked below" in lost_map[s["id"]])
-    options = [Option(name=chosen["name"], amountCents=chosen["amountCents"], arrives=chosen["arrives"])]
-    options += [Option(name=s["name"], amountCents=s["amountCents"], arrives=s["arrives"], lostBecause=lost_map[s["id"]]) for s in others]
-    options += [Option(name=s["name"], amountCents=s["amountCents"], arrives=s["arrives"], lostBecause=s["lostBecause"]) for s in rejected]
+    options = [Option(name=chosen["name"], amountCents=chosen["amountCents"], arrives=chosen["arrives"], imageUrl=chosen.get("imageUrl"))]
+    options += [Option(name=s["name"], amountCents=s["amountCents"], arrives=s["arrives"], lostBecause=lost_map[s["id"]],
+                       imageUrl=s.get("imageUrl")) for s in others]
+    options += [Option(name=s["name"], amountCents=s["amountCents"], arrives=s["arrives"], lostBecause=s["lostBecause"],
+                       imageUrl=s.get("imageUrl")) for s in rejected]
 
     noticed = f"Your shoes hit {cond.miles} miles ({cond.percentLife}% of their life). Race day is in {days_to_race} days."
     if why:
@@ -205,7 +207,7 @@ def recommend(req: ShoesRequest) -> ShoesResponse:
         amountCents=chosen["amountCents"],
         status="bought" if chosen["amountCents"] <= rule.maxAutoCents else "awaitingApproval",
         rule=Rule(id=rule.id, text=rule.text), noticed=noticed,
-        evidence=evidence, evidenceLive=ev_live, options=options,
+        evidence=evidence, evidenceLive=ev_live, options=options, imageUrl=chosen.get("imageUrl"),
     )
     audit_id = store.log_recommendation(req.persona, source, chosen["name"], int((time.monotonic() - t0) * 1000), {
         "request": req.model_dump(mode="json"), "condition": cond.model_dump(), "profile": prof.model_dump(),

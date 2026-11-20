@@ -37,7 +37,7 @@ curl -s localhost:8000/shoes/recommend -H 'content-type: application/json' -d '{
 
 ## How it decides
 
-**Where the shoes come from:** web research, not a fixed list. `scripts/prefetch_web.py jordan` searches expert review sites with **Nimble** (2 queries, about 12 pages), and **SIE Qwen3.8** extracts each recommended model (price, toe box, plate, cushion, drop, a quote and the URL). The result is saved to `harness/data/web_candidates/jordan.json`, committed and deployed. At request time the harness reads SingleStore if `SINGLESTORE_URL` is set, else that snapshot, else the fake catalog. `candidatesFrom` in the response says which. Delivery is simulated (Demo store, ships in 3 days), because reviews carry no arrival dates.
+**Where the shoes come from:** web research, not a fixed list. `scripts/prefetch_web.py jordan` searches expert review sites with **Nimble** (2 queries, about 12 pages), and **SIE Qwen3.8** extracts each recommended model (price, toe box, plate, cushion, drop, a quote and the URL). The result is saved to `harness/data/web_candidates/jordan.json`, committed and deployed. At request time the harness reads SingleStore if `SINGLESTORE_URL` is set, else that snapshot, else the fake catalog. `candidatesFrom` in the response says which. Delivery is simulated (Demo store, ships in 3 days), because reviews carry no arrival dates. `scripts/add_images.py jordan` then finds a product photo per shoe (Nimble finds pages about it; the page's `og:image` is used if it names the model or comes from a product page, isn't a generic banner, and actually serves an image). The response carries `imageUrl` on the purchase and on every option.
 
 To connect the app, see [INTEGRATION.md](INTEGRATION.md).
 

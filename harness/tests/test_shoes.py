@@ -128,3 +128,15 @@ def test_web_snapshot_candidates_used_and_filtered(no_sie, monkeypatch):
     lost = {o["name"]: o.get("lostBecause") for o in p["options"]}
     assert "confirm a wide toe box" in lost["Brand B Unknown"] and "Low cushioning" in lost["Brand C Flat"]
     assert any(e["source"] == "Review (example.com)" for e in p["evidence"])
+
+
+@pytest.mark.web
+def test_web_pick_carries_image_url(no_sie, monkeypatch):
+    from harness import store
+    from harness.web import research
+    monkeypatch.setattr(store, "cached_candidates", lambda persona: None)
+    snap = research.load_snapshot("jordan")
+    assert snap and all("imageUrl" in c for c in snap["candidates"])
+    monkeypatch.setattr(research, "load_snapshot", lambda persona: snap)
+    p = TestClient(app).post("/shoes/recommend", json=body()).json()["purchase"]
+    assert p["imageUrl"] and p["imageUrl"] == p["options"][0]["imageUrl"] and p["imageUrl"].startswith("https://")

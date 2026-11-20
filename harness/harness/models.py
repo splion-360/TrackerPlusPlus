@@ -23,6 +23,7 @@ class Option(BaseModel):
     amountCents: int
     arrives: Optional[datetime] = None
     lostBecause: Optional[str] = None
+    imageUrl: Optional[str] = None      # extra (not in the Swift type yet): product photo from the web
 
 
 class Purchase(BaseModel):
@@ -38,6 +39,7 @@ class Purchase(BaseModel):
     options: list[Option]
     cancelBy: Optional[datetime] = None
     outcome: Optional[str] = None
+    imageUrl: Optional[str] = None      # extra: the chosen shoe's photo (same as options[0].imageUrl)
 
 
 class Mandate(BaseModel):

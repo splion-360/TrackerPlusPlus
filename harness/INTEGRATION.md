@@ -110,6 +110,7 @@ The trigger stays Swift's (`shoeMiles ≥ 375` and race within 14 days). If the 
 
 - **Shoes:** real models from expert reviews found with Nimble this morning; the review page is the last citation. Prices are list prices from the reviews. Delivery is simulated: every pick ships from the "Demo store, no charge" in 3 days.
 - **The Why screen:** expect about 15–25 options: the chosen one, about 3 the model compared, and the rest with rule reasons (toe box not confirmed, low cushioning for long runs, carbon plate). Consider showing the first 4–5 and collapsing the rest.
+- **Images:** `purchase.imageUrl` (and `options[].imageUrl`) is a product photo from the web, often WebP, which iOS shows natively. To show it, add `var imageUrl: String? = nil` to `Purchase` and `Purchase.Option` in `Contract.swift` (optional, so old payloads still decode), then on the card: `AsyncImage(url: purchase.imageUrl.flatMap(URL.init)) { $0.resizable().scaledToFit() } placeholder: { Color.clear }.frame(height: 120)`. Swift's own fallback pick has no image, so keep the placeholder empty.
 - Unknown JSON keys (`condition`, `profile`, `source`, ...) are fine to ignore; only `purchase` matters.
 
 ## 5. Check it
