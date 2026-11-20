@@ -122,3 +122,21 @@ curl -s -X POST https://trackerplusplus-harness.vercel.app/warm -H "X-Harness-Se
 In the Simulator: Demo → "Jordan: shoes near 400 mi". The card should show the harness's shoe, and Why this pair should show live citations including a review site. Turn Wi-Fi off and repeat: Swift's own Pacer 9 should appear, so the fallback works.
 
 **Before going on stage:** `POST /warm` with the secret, so the first request doesn't wait for a cold model.
+
+
+## 6. Workout recommendations (optional, after the shoes)
+
+`POST /workouts/recommend` with the same header returns Jordan's next 7 days as `AgentAction`s you can append like any other action:
+
+```json
+{"persona": "jordan", "now": "<demo clock ISO 8601>",
+ "shoes": {"boughtOn": "2026-10-22", "startMiles": 267},
+ "raceDate": "2026-11-29",
+ "newPairArrives": "2026-11-23",
+ "busy": [{"start": "...", "end": "..."}]}
+```
+
+- `newPairArrives`: send the chosen option's `arrives` date once Order it was tapped; leave it out before.
+- `busy`: the same busy times the snapshot already carries.
+- Response `actions[]`: `{id, kind: "addWorkout" | "note", title, planItemId, after: {start, end, activityType}, reason, points, createdAt, rules}`. `rules` is an extra field you can ignore or show on the Why screen. Ids are stable (`wk-<date>-<activity>`), so repeat calls don't duplicate.
+- About 1.5 s; `source` is `sie` (model-written reasons) or `rules` (template reasons).

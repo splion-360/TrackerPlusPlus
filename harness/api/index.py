@@ -9,7 +9,7 @@ from harness import config, store
 from harness.clients import sie
 from harness.evidence import senso
 from harness.models import EvidenceRequest, EvidenceResponse, ShoesRequest, ShoesResponse
-from harness.recommend import shoes
+from harness.recommend import shoes, workouts
 
 app = FastAPI(title="TrackerPlusPlus harness", version="0.1.0")
 
@@ -30,6 +30,15 @@ def health() -> dict:
 @app.post("/warm", dependencies=[Depends(require_secret)])
 def warm() -> dict:
     return {**sie.warm(provision_timeout_s=240), **store.warm()}
+
+
+@app.post("/workouts/recommend", dependencies=[Depends(require_secret)])
+def workouts_recommend(req: workouts.WorkoutsRequest) -> dict:
+    """The next 7 days: health data (load, sleep, resting HR) + shoe condition + memory → calendar-ready actions."""
+    try:
+        return workouts.recommend(req)
+    except KeyError:
+        raise HTTPException(status_code=404, detail=f"unknown persona {req.persona}")
 
 
 @app.post("/shoes/prefetch", dependencies=[Depends(require_secret)])

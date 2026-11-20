@@ -17,7 +17,9 @@
    "indoor": false,
    "distanceKm": 9.816,
    "paceMinPerKm": 5.54,
-   "elevationAscendedM": 106.2
+   "elevationAscendedM": 106.2,
+   "avgHeartRate": 155,
+   "effort": null
   },
   {
    "activityType": "Running",
@@ -28,7 +30,9 @@
    "indoor": false,
    "distanceKm": 6.959,
    "paceMinPerKm": 5.93,
-   "elevationAscendedM": 76.6
+   "elevationAscendedM": 76.6,
+   "avgHeartRate": 144,
+   "effort": null
   },
   {
    "activityType": "Running",
@@ -39,7 +43,9 @@
    "indoor": false,
    "distanceKm": 9.207,
    "paceMinPerKm": 5.26,
-   "elevationAscendedM": 104.1
+   "elevationAscendedM": 104.1,
+   "avgHeartRate": 163,
+   "effort": null
   },
   {
    "activityType": "FunctionalStrengthTraining",
@@ -47,7 +53,9 @@
    "start": "2026-10-23T06:58:39.044802-08:00",
    "end": "2026-10-23T07:41:57.044802-08:00",
    "durationMin": 43.31,
-   "indoor": true
+   "indoor": true,
+   "avgHeartRate": 112,
+   "effort": null
   },
   {
    "activityType": "Running",
@@ -58,7 +66,9 @@
    "indoor": false,
    "distanceKm": 4.993,
    "paceMinPerKm": 6.08,
-   "elevationAscendedM": 38.6
+   "elevationAscendedM": 38.6,
+   "avgHeartRate": 133,
+   "effort": null
   },
   {
    "activityType": "Running",
@@ -69,7 +79,9 @@
    "indoor": false,
    "distanceKm": 14.44,
    "paceMinPerKm": 6.08,
-   "elevationAscendedM": 100.0
+   "elevationAscendedM": 100.0,
+   "avgHeartRate": 142,
+   "effort": null
   },
   {
    "activityType": "Running",
@@ -80,7 +92,9 @@
    "indoor": false,
    "distanceKm": 9.459,
    "paceMinPerKm": 5.55,
-   "elevationAscendedM": 53.8
+   "elevationAscendedM": 53.8,
+   "avgHeartRate": 160,
+   "effort": null
   },
   {
    "activityType": "Running",
@@ -91,7 +105,9 @@
    "indoor": false,
    "distanceKm": 6.859,
    "paceMinPerKm": 5.83,
-   "elevationAscendedM": 64.0
+   "elevationAscendedM": 64.0,
+   "avgHeartRate": 137,
+   "effort": null
   },
   {
    "activityType": "Running",
@@ -102,7 +118,9 @@
    "indoor": false,
    "distanceKm": 9.591,
    "paceMinPerKm": 5.24,
-   "elevationAscendedM": 73.9
+   "elevationAscendedM": 73.9,
+   "avgHeartRate": 163,
+   "effort": null
   },
   {
    "activityType": "FunctionalStrengthTraining",
@@ -110,7 +128,9 @@
    "start": "2026-10-30T07:32:49.711381-08:00",
    "end": "2026-10-30T08:10:49.711381-08:00",
    "durationMin": 38.02,
-   "indoor": true
+   "indoor": true,
+   "avgHeartRate": 118,
+   "effort": null
   },
   {
    "activityType": "Running",
@@ -121,7 +141,9 @@
    "indoor": false,
    "distanceKm": 5.2,
    "paceMinPerKm": 6.16,
-   "elevationAscendedM": 23.6
+   "elevationAscendedM": 23.6,
+   "avgHeartRate": 127,
+   "effort": null
   },
   {
    "activityType": "Running",
@@ -132,7 +154,9 @@
    "indoor": false,
    "distanceKm": 15.62,
    "paceMinPerKm": 5.8,
-   "elevationAscendedM": 193.1
+   "elevationAscendedM": 193.1,
+   "avgHeartRate": 149,
+   "effort": null
   },
   {
    "activityType": "Yoga",
@@ -140,7 +164,9 @@
    "start": "2026-11-02T06:02:00-08:00",
    "end": "2026-11-02T06:26:59-08:00",
    "durationMin": 25.0,
-   "indoor": true
+   "indoor": true,
+   "avgHeartRate": 85,
+   "effort": null
   },
   {
    "activityType": "Running",
@@ -151,7 +177,9 @@
    "indoor": false,
    "distanceKm": 9.83,
    "paceMinPerKm": 5.24,
-   "elevationAscendedM": 92.4
+   "elevationAscendedM": 92.4,
+   "avgHeartRate": 160,
+   "effort": null
   },
   {
    "activityType": "Running",
@@ -162,7 +190,9 @@
    "indoor": false,
    "distanceKm": 6.959,
    "paceMinPerKm": 5.7,
-   "elevationAscendedM": 41.1
+   "elevationAscendedM": 41.1,
+   "avgHeartRate": 136,
+   "effort": null
   },
   {
    "activityType": "Running",
@@ -173,7 +203,9 @@
    "indoor": false,
    "distanceKm": 9.46,
    "paceMinPerKm": 5.14,
-   "elevationAscendedM": 77.4
+   "elevationAscendedM": 77.4,
+   "avgHeartRate": 167,
+   "effort": null
   },
   {
    "activityType": "FunctionalStrengthTraining",
@@ -181,7 +213,9 @@
    "start": "2026-11-06T17:55:00-08:00",
    "end": "2026-11-06T18:38:33-08:00",
    "durationMin": 43.55,
-   "indoor": true
+   "indoor": true,
+   "avgHeartRate": 121,
+   "effort": null
   },
   {
    "activityType": "Running",
@@ -192,7 +226,9 @@
    "indoor": false,
    "distanceKm": 6.056,
    "paceMinPerKm": 6.23,
-   "elevationAscendedM": 37.9
+   "elevationAscendedM": 37.9,
+   "avgHeartRate": 129,
+   "effort": null
   },
   {
    "activityType": "Running",
@@ -203,7 +239,9 @@
    "indoor": false,
    "distanceKm": 11.76,
    "paceMinPerKm": 5.97,
-   "elevationAscendedM": 147.1
+   "elevationAscendedM": 147.1,
+   "avgHeartRate": 143,
+   "effort": null
   },
   {
    "activityType": "Running",
@@ -214,7 +252,9 @@
    "indoor": false,
    "distanceKm": 10.049,
    "paceMinPerKm": 5.32,
-   "elevationAscendedM": 44.6
+   "elevationAscendedM": 44.6,
+   "avgHeartRate": 162,
+   "effort": null
   },
   {
    "activityType": "Running",
@@ -225,7 +265,9 @@
    "indoor": false,
    "distanceKm": 6.756,
    "paceMinPerKm": 5.85,
-   "elevationAscendedM": 29.3
+   "elevationAscendedM": 29.3,
+   "avgHeartRate": 140,
+   "effort": null
   },
   {
    "activityType": "Running",
@@ -236,7 +278,9 @@
    "indoor": false,
    "distanceKm": 10.444,
    "paceMinPerKm": 5.12,
-   "elevationAscendedM": 43.8
+   "elevationAscendedM": 43.8,
+   "avgHeartRate": 156,
+   "effort": null
   },
   {
    "activityType": "FunctionalStrengthTraining",
@@ -244,7 +288,9 @@
    "start": "2026-11-13T07:34:32.284727-08:00",
    "end": "2026-11-13T08:17:34.284727-08:00",
    "durationMin": 43.05,
-   "indoor": true
+   "indoor": true,
+   "avgHeartRate": 114,
+   "effort": null
   },
   {
    "activityType": "Running",
@@ -255,7 +301,9 @@
    "indoor": false,
    "distanceKm": 6.555,
    "paceMinPerKm": 5.85,
-   "elevationAscendedM": 52.5
+   "elevationAscendedM": 52.5,
+   "avgHeartRate": 135,
+   "effort": null
   },
   {
    "activityType": "Running",
@@ -266,7 +314,9 @@
    "indoor": false,
    "distanceKm": 18.65,
    "paceMinPerKm": 5.92,
-   "elevationAscendedM": 146.8
+   "elevationAscendedM": 146.8,
+   "avgHeartRate": 141,
+   "effort": null
   },
   {
    "activityType": "Yoga",
@@ -274,7 +324,9 @@
    "start": "2026-11-16T18:09:00-08:00",
    "end": "2026-11-16T18:37:52-08:00",
    "durationMin": 28.87,
-   "indoor": true
+   "indoor": true,
+   "avgHeartRate": 87,
+   "effort": null
   },
   {
    "activityType": "Running",
@@ -285,7 +337,161 @@
    "indoor": false,
    "distanceKm": 9.993,
    "paceMinPerKm": 5.45,
-   "elevationAscendedM": 82.9
+   "elevationAscendedM": 82.9,
+   "avgHeartRate": 153,
+   "effort": null
+  }
+ ],
+ "dailySummaries": [
+  {
+   "date": "2026-10-19",
+   "restingHeartRate": 47,
+   "sleepMin": 502
+  },
+  {
+   "date": "2026-10-20",
+   "restingHeartRate": 49,
+   "sleepMin": 421
+  },
+  {
+   "date": "2026-10-21",
+   "restingHeartRate": 51,
+   "sleepMin": 397
+  },
+  {
+   "date": "2026-10-22",
+   "restingHeartRate": 50,
+   "sleepMin": 416
+  },
+  {
+   "date": "2026-10-23",
+   "restingHeartRate": 50,
+   "sleepMin": 493
+  },
+  {
+   "date": "2026-10-24",
+   "restingHeartRate": 46,
+   "sleepMin": 565
+  },
+  {
+   "date": "2026-10-25",
+   "restingHeartRate": 45,
+   "sleepMin": 563
+  },
+  {
+   "date": "2026-10-26",
+   "restingHeartRate": 49,
+   "sleepMin": 492
+  },
+  {
+   "date": "2026-10-27",
+   "restingHeartRate": 49,
+   "sleepMin": 487
+  },
+  {
+   "date": "2026-10-28",
+   "restingHeartRate": 49,
+   "sleepMin": 571
+  },
+  {
+   "date": "2026-10-29",
+   "restingHeartRate": 48,
+   "sleepMin": 505
+  },
+  {
+   "date": "2026-10-30",
+   "restingHeartRate": 48,
+   "sleepMin": 533
+  },
+  {
+   "date": "2026-10-31",
+   "restingHeartRate": 45,
+   "sleepMin": 590
+  },
+  {
+   "date": "2026-11-01",
+   "restingHeartRate": 46,
+   "sleepMin": 602
+  },
+  {
+   "date": "2026-11-02",
+   "restingHeartRate": 49,
+   "sleepMin": 432
+  },
+  {
+   "date": "2026-11-03",
+   "restingHeartRate": 46,
+   "sleepMin": 574
+  },
+  {
+   "date": "2026-11-04",
+   "restingHeartRate": 49,
+   "sleepMin": 395
+  },
+  {
+   "date": "2026-11-05",
+   "restingHeartRate": 48,
+   "sleepMin": 500
+  },
+  {
+   "date": "2026-11-06",
+   "restingHeartRate": 49,
+   "sleepMin": 558
+  },
+  {
+   "date": "2026-11-07",
+   "restingHeartRate": 48,
+   "sleepMin": 512
+  },
+  {
+   "date": "2026-11-08",
+   "restingHeartRate": 47,
+   "sleepMin": 522
+  },
+  {
+   "date": "2026-11-09",
+   "restingHeartRate": 50,
+   "sleepMin": 535
+  },
+  {
+   "date": "2026-11-10",
+   "restingHeartRate": 50,
+   "sleepMin": 462
+  },
+  {
+   "date": "2026-11-11",
+   "restingHeartRate": 49,
+   "sleepMin": 467
+  },
+  {
+   "date": "2026-11-12",
+   "restingHeartRate": 48,
+   "sleepMin": 479
+  },
+  {
+   "date": "2026-11-13",
+   "restingHeartRate": 50,
+   "sleepMin": 529
+  },
+  {
+   "date": "2026-11-14",
+   "restingHeartRate": 47,
+   "sleepMin": 624
+  },
+  {
+   "date": "2026-11-15",
+   "restingHeartRate": 49,
+   "sleepMin": 542
+  },
+  {
+   "date": "2026-11-16",
+   "restingHeartRate": 51,
+   "sleepMin": 510
+  },
+  {
+   "date": "2026-11-17",
+   "restingHeartRate": 49,
+   "sleepMin": 481
   }
  ]
 }

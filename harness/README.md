@@ -11,7 +11,7 @@ cd harness
 uv sync
 PYTHONPATH=. uv run python scripts/warm.py      # loads both SIE models; also the smoke test
 PYTHONPATH=. uv run python scripts/sample.py    # Jordan's demo preset, live (add --offline for the fallback)
-uv run pytest -q                                # 18 tests; the live SIE test skips without a key
+uv run pytest -q                                # 30 tests; the live SIE test skips without a key
 PYTHONPATH=. uv run uvicorn api.index:app --reload --port 8000
 ```
 
@@ -22,6 +22,7 @@ PYTHONPATH=. uv run uvicorn api.index:app --reload --port 8000
 | `GET /health` | Which keys are configured (never their values) |
 | `POST /warm` | Loads the two SIE models before the demo, since cold starts can take minutes |
 | `POST /evidence` | `{purchaseKind, query}` → `{evidence, live}`, the shape `EvidenceClient.swift` expects. Cached passages until Senso is wired. Open even when a secret is set, because the app sends no header. |
+| `POST /workouts/recommend` | The next 7 days from health data, shoe condition and memory: `{persona, now, shoes?, newPairArrives?, raceDate?, busy[]}` → `{summary, signals, actions[], memoryUsed, source, auditId}`. Needs the secret. |
 | `POST /shoes/prefetch?persona=jordan` | Researches shoes on the web now (Nimble + SIE, about 30 s) and stores them in SingleStore when configured. Needs the secret. |
 | `GET /audit/recent?persona=jordan&limit=20` | The latest recommendations from SingleStore. Needs the secret; 503 when SingleStore is off. |
 | `GET /audit/{auditId}` | One full audit record. Needs the secret. |
@@ -50,6 +51,19 @@ To connect the app, see [INTEGRATION.md](INTEGRATION.md).
 7. Mandate: over the `any` line's `maxAutoCents` means `awaitingApproval`. Approval, cancellation, action ids and break-in runs stay in Swift.
 
 The whole route has a 5 s budget. Measured on Jordan with web candidates: about 3.5–4 s live and about 0.3 s on the fallback.
+
+## Workout recommendations
+
+`POST /workouts/recommend` plans the next 7 days. Code decides the sessions; the model only explains them.
+
+- **Usual week:** per weekday, the activity, minutes and start hour Jordan actually did in the last 4 weeks. **Tony's memory agent** supplies the fixed slots (e.g. "running on Tue between 18:00 and 19:00") and they set the start time. The history is shifted by whole weeks here so weekdays match the memory.
+- **Health data:** training load (effort × minutes; effort estimated from average heart rate when missing) for the last 7 days vs. the 4-week weekly average. The week must stay ≤ min(110% of the larger of the two, 1.3 × the average). Sleep down 30+ min/night or resting HR up 3+ bpm → the first hard session becomes easy.
+- **Shoes:** worn out (≥85%) and no new pair yet → runs longer than 45 min move to the bike or elliptical. After `newPairArrives`, the first two runs are 30-minute break-in runs.
+- **Race:** taper in the last 10 days (long run 60%, other runs 80%), rest the day before, and race day as a note.
+- **Calendar:** sessions overlapping `busy` move to right after the event.
+- **Reasons:** SIE Qwen3.8 writes one sentence per session, all calls in parallel (about 1.5 s). A template is the fallback. Every plan is logged to SingleStore.
+
+Actions use the app's `AgentAction` shape (`addWorkout` with an `after` slot; ids are stable as `wk-<date>-<activity>`), so the app can put them on the calendar. Memory facts are rebuilt with `node harness/scripts/build_memory.mjs` (from the repo root).
 
 ## SingleStore (audit log and candidate store)
 
