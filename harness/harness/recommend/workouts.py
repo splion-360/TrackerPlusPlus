@@ -22,6 +22,7 @@ from harness import data, store
 from harness.clients import sie
 from harness.models import ShoeState
 from harness.recommend.condition import condition
+from harness.web import workout_ideas
 
 BUDGET_S = 5.0
 DAYS = 7
@@ -243,6 +244,88 @@ def _reasons(plan: dict, ids: list[str], timeout: float) -> dict[str, str]:
     return out
 
 
+SAFE_KINDS = {"strides", "shakeout", "mobility", "drills", "walk"}
+DEFAULT_MIN = {"strides": 6, "shakeout": 15, "mobility": 10, "drills": 10, "walk": 15}
+ADDON_EFFORT = 3.0
+MAX_SUGGESTIONS = 2
+
+
+def _phases(req: WorkoutsRequest, plan: dict) -> set[str]:
+    ph = {"any"}
+    first = (req.now + timedelta(days=1)).date()
+    if req.raceDate and 0 < (req.raceDate - first).days <= TAPER_DAYS:
+        ph |= {"taper", "race week"}
+    if plan["condition"] and plan["condition"].status == "replace":
+        ph.add("worn shoes")
+    if req.newPairArrives:
+        ph.add("new shoes")
+    return ph
+
+
+def suggestions(req: WorkoutsRequest, plan: dict, ids: list[str]) -> list[dict]:
+    """Optional extras from the web ideas, filtered by code rules, at most two, never booked automatically."""
+    sig, sessions = plan["signals"], plan["sessions"]
+    headroom = sig["loadCap"] - sig["plannedLoad"]
+    phases = _phases(req, plan)
+    worn = bool(plan["condition"] and plan["condition"].status == "replace")
+    runs = [(i, s) for i, s in zip(ids, sessions) if s["activityType"] == "Running" and not s.get("race")]
+    out, used_kinds = [], set()
+    for idea in sorted(workout_ideas.load(), key=lambda x: (x["phase"] == "any", x["kind"] == "mobility")):
+        if len(out) >= MAX_SUGGESTIONS:
+            break
+        kind = idea["kind"]
+        if kind not in SAFE_KINDS or idea["intensity"] == "hard" or idea["phase"] not in phases or kind in used_kinds:
+            continue
+        minutes = int(idea["minutes"] or DEFAULT_MIN[kind])
+        if minutes > 30 or ADDON_EFFORT * minutes > headroom:
+            continue
+        attach = None
+        if kind in ("strides", "shakeout", "drills"):
+            ok = [(i, s) for i, s in runs if not (worn and req.newPairArrives and s["date"] <= req.newPairArrives)
+                  and not (worn and not req.newPairArrives)]
+            if kind == "shakeout" and req.raceDate:
+                ok = [(i, s) for i, s in ok if s["date"] == req.raceDate - timedelta(days=2)] or []
+            if not ok:
+                continue
+            attach = ok[-1] if kind == "strides" else ok[0]
+        when = f"after your {attach[1]['date']:%a} run" if attach else idea["when"]
+        out.append({"id": idea["id"], "title": idea["title"], "kind": kind, "activityType": idea["activityType"],
+                    "minutes": minutes, "when": when, "attachTo": attach[0] if attach else None,
+                    "why": _why(idea, req),
+                    "source": {"title": idea["sourceTitle"], "host": idea["sourceHost"], "url": idea["url"]},
+                    "quote": idea["quote"], "optional": True})
+        used_kinds.add(kind)
+        headroom -= ADDON_EFFORT * minutes
+    return out
+
+
+def _why(idea: dict, req: WorkoutsRequest) -> str:
+    lead = {"taper": f"Your race is {(req.raceDate - req.now.date()).days} days out" if req.raceDate else "You're tapering",
+            "race week": f"Race week: your race is {(req.raceDate - req.now.date()).days} days out" if req.raceDate else "Race week",
+            "new shoes": f"Your new pair arrives {req.newPairArrives:%a}" if req.newPairArrives else "New shoes",
+            "worn shoes": "Your shoes are worn out", "any": "An easy add-on"}[idea["phase"]]
+    return f"{lead}; {idea['sourceHost']} suggests it {idea['when'].rstrip('.')}. Optional, and it fits your weekly load."
+
+
+def citations(session: dict) -> list[dict]:
+    """A web source behind a rule the session applied (taper, worn shoes, break-in), when one was found."""
+    want = []
+    tags = " ".join(session["tags"])
+    if "taper" in tags:
+        want.append("taper")
+    if "off the road" in tags:
+        want.append("worn shoes")
+    if "break-in" in tags:
+        want.append("new shoes")
+    ideas = workout_ideas.load()
+    out = []
+    for phase in want:
+        hit = next((i for i in ideas if i["phase"] == phase or (phase == "worn shoes" and i["kind"] == "cross-training")), None)
+        if hit:
+            out.append({"source": f"{hit['sourceTitle']} ({hit['sourceHost']})", "passage": hit["quote"], "url": hit["url"]})
+    return out
+
+
 def recommend(req: WorkoutsRequest) -> dict:
     t0 = time.monotonic()
     plan = build(req)
@@ -266,10 +349,11 @@ def recommend(req: WorkoutsRequest) -> dict:
                         "after": None if s.get("race") else {"start": s["start"].isoformat(), "end": s["end"].isoformat(),
                                                              "activityType": s["activityType"]},
                         "reason": reasons[i], "points": None if s.get("race") else 10,
-                        "createdAt": req.now.isoformat(), "rules": s["tags"]})
+                        "createdAt": req.now.isoformat(), "rules": s["tags"], "evidence": citations(s)})
     mem = plan["memory"] or {}
     used = [f["text"] for f in mem.get("facts", []) if f.get("kind") in ("regularity", "load", "body")]
-    result = {"summary": summary, "signals": sig, "actions": actions, "memoryUsed": used,
+    result = {"summary": summary, "signals": sig, "actions": actions, "suggestions": suggestions(req, plan, ids),
+              "memoryUsed": used,
               "memoryAsOf": mem.get("asOf"), "live": source == "sie", "source": source,
               "condition": plan["condition"].model_dump() if plan["condition"] else None}
     result["auditId"] = store.log_recommendation(req.persona, source, "week plan", int((time.monotonic() - t0) * 1000),

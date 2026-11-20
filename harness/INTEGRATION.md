@@ -139,4 +139,6 @@ In the Simulator: Demo → "Jordan: shoes near 400 mi". The card should show the
 - `newPairArrives`: send the chosen option's `arrives` date once Order it was tapped; leave it out before.
 - `busy`: the same busy times the snapshot already carries.
 - Response `actions[]`: `{id, kind: "addWorkout" | "note", title, planItemId, after: {start, end, activityType}, reason, points, createdAt, rules}`. `rules` is an extra field you can ignore or show on the Why screen. Ids are stable (`wk-<date>-<activity>`), so repeat calls don't duplicate.
+- `actions[].evidence`: web citations `{source, passage, url}` for the session's rule; show them on the Why screen.
+- `suggestions[]`: up to 2 optional extras from expert guidance, e.g. `{title: "Relaxed strides", minutes: 6, when: "after your Thu run", attachTo: "wk-…", why, source: {title, host, url}, quote, optional: true}`. Show them as "Suggested" (don't book automatically). Fine to ignore for the demo.
 - About 1.5 s; `source` is `sie` (model-written reasons) or `rules` (template reasons).

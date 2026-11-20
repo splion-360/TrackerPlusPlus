@@ -11,7 +11,7 @@ cd harness
 uv sync
 PYTHONPATH=. uv run python scripts/warm.py      # loads both SIE models; also the smoke test
 PYTHONPATH=. uv run python scripts/sample.py    # Jordan's demo preset, live (add --offline for the fallback)
-uv run pytest -q                                # 30 tests; the live SIE test skips without a key
+uv run pytest -q                                # 33 tests; the live SIE test skips without a key
 PYTHONPATH=. uv run uvicorn api.index:app --reload --port 8000
 ```
 
@@ -61,6 +61,8 @@ The whole route has a 5 s budget. Measured on Jordan with web candidates: about 
 - **Shoes:** worn out (≥85%) and no new pair yet → runs longer than 45 min move to the bike or elliptical. After `newPairArrives`, the first two runs are 30-minute break-in runs.
 - **Race:** taper in the last 10 days (long run 60%, other runs 80%), rest the day before, and race day as a note.
 - **Calendar:** sessions overlapping `busy` move to right after the event.
+- **Web suggestions (optional):** `scripts/prefetch_ideas.py` has Nimble search expert guidance (taper, race-week drills, cross-training on worn shoes, breaking in new shoes) and Qwen extracts small session ideas with their source into `harness/data/workout_ideas/running.json`. The recommender offers at most 2 as `suggestions` (never booked): only low-risk kinds (strides, shakeout, mobility, drills, walk), matching the week's phase, within the load headroom, no extra running on worn shoes before the new pair, and running add-ons attached to a planned run (`attachTo`).
+- **Citations:** each session's `evidence` cites a web source behind its rule (taper, worn shoes, break-in) when one was found.
 - **Reasons:** SIE Qwen3.8 writes one sentence per session, all calls in parallel (about 1.5 s). A template is the fallback. Every plan is logged to SingleStore.
 
 Actions use the app's `AgentAction` shape (`addWorkout` with an `after` slot; ids are stable as `wk-<date>-<activity>`), so the app can put them on the calendar. Memory facts are rebuilt with `node harness/scripts/build_memory.mjs` (from the repo root).

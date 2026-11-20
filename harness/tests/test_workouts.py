@@ -83,3 +83,23 @@ def test_route_ids_stable(offline):
     body = req().model_dump(mode="json")
     assert [a["id"] for a in c.post("/workouts/recommend", json=body).json()["actions"]] == \
            [a["id"] for a in c.post("/workouts/recommend", json=body).json()["actions"]]
+
+
+def test_suggestions_are_optional_safe_and_capped(offline):
+    r = TestClient(app).post("/workouts/recommend", json=req().model_dump(mode="json")).json()
+    sug = r["suggestions"]
+    assert 0 < len(sug) <= W.MAX_SUGGESTIONS and all(x["optional"] and x["source"]["url"] for x in sug)
+    assert all(x["kind"] in W.SAFE_KINDS and x["minutes"] <= 30 for x in sug)
+    ids = {a["id"] for a in r["actions"]}
+    assert all(x["attachTo"] in ids for x in sug if x["attachTo"])
+
+
+def test_no_running_addons_on_worn_shoes_without_a_new_pair(offline):
+    r = TestClient(app).post("/workouts/recommend", json=req(newPairArrives=None).model_dump(mode="json")).json()
+    assert not any(x["kind"] in ("strides", "shakeout", "drills") for x in r["suggestions"])
+
+
+def test_taper_sessions_cite_a_web_source(offline):
+    r = TestClient(app).post("/workouts/recommend", json=req().model_dump(mode="json")).json()
+    taper = [a for a in r["actions"] if any("taper" in t for t in a["rules"])]
+    assert taper and all(a["evidence"] and a["evidence"][0]["url"] for a in taper)
